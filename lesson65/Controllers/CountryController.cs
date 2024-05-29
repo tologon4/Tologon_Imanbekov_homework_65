@@ -40,5 +40,38 @@ public class CountryController : Controller
         return new ObjectResult(country);
     }
 
-    
+    [HttpDelete("{id}")]
+    public async Task<ActionResult<Country>> Delete(int id)
+    {
+        Country? country = await _db.Countries.FirstOrDefaultAsync(c => c.Id == id);
+        if (country == null)
+            return NotFound();
+        _db.Countries.Remove(country);
+        await _db.SaveChangesAsync();
+        return Ok(country);
+    }
+
+    [HttpPut]
+    public async Task<ActionResult<Country>> Put(Country country)
+    {
+        if (country == null)
+            return BadRequest();
+        if (!_db.Countries.Any(c => c.Id == country.Id))
+            return NotFound();
+        _db.Update(country);
+        await _db.SaveChangesAsync();
+        return Ok(country);
+    }
+
+    [HttpPost]
+    public async Task<ActionResult<Country>> Post(Country country)
+    {
+        if (country == null)
+            return BadRequest();
+        if (_db.Countries.Any(c => c.Id == country.Id))
+            return BadRequest();
+        _db.Countries.Add(country);
+        await _db.SaveChangesAsync();
+        return Ok(country);
+    }
 }
