@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace lesson65.Controllers;
 [ApiController]
-[Route("[controller]")]
+[Route("api/[controller]")]
 public class CountryController : Controller
 {
     private CountryDb _db;
@@ -19,5 +19,6 @@ public class CountryController : Controller
     {
         return await _db.Countries.ToListAsync();
     }
+
     
 }
