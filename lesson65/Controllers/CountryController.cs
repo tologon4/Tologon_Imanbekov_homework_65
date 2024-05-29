@@ -29,5 +29,16 @@ public class CountryController : Controller
         return new ObjectResult(country);
     }
     
+    [HttpGet("{name}")]
+    public async Task<ActionResult<Country>> Get(string name)
+    {
+        Country? country = await _db.Countries.FirstOrDefaultAsync(c => c.Name.ToLower() == name.ToLower());
+        if (country == null)
+            country = await _db.Countries.FirstOrDefaultAsync(c => c.OfficialName.ToLower() == name.ToLower());
+        if (country == null)
+            return NotFound();
+        return new ObjectResult(country);
+    }
+
     
 }
