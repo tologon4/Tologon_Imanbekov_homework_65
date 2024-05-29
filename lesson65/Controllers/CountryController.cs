@@ -20,5 +20,14 @@ public class CountryController : Controller
         return await _db.Countries.ToListAsync();
     }
 
+    [HttpGet("{id:int}")]
+    public async Task<ActionResult<Country>> Get(int id)
+    {
+        Country? country = await _db.Countries.FirstOrDefaultAsync(c => c.Id == id);
+        if (country == null)
+            return NotFound();
+        return new ObjectResult(country);
+    }
+    
     
 }
